@@ -80,6 +80,7 @@ def extract_book_details(url: str, genre: str) -> Optional[Dict[str, Any]]:
     try:
         detail_response = requests.get(url, timeout=10)
         detail_response.raise_for_status()
+        detail_response.encoding = 'utf-8'
         detail_soup = BeautifulSoup(detail_response.text, 'html.parser')
 
         #extraindo link da imagem
