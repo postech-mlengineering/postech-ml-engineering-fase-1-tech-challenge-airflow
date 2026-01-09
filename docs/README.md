@@ -95,8 +95,10 @@ A API estará rodando em http://localhost:8080. Certifique-se de configurar as v
 
 ### Integrações
 
-O airflow interage com a API que gerencia o banco de dados e o motor de recomendação.
+O airflow interage com uma API RESTful desenvolvida com Flask que gerencia o banco de dados e um motor de recomendação, disponibilizando os dados para um aplicação web desenvolvido com Streamlit.
 
 Link para o repositório da API: https://github.com/postech-mlengineering/postech-ml-techchallenge-fase-1-api
+
+Link para o repositório do aplicativo web: https://github.com/postech-mlengineering/postech-ml-engineering-fase-1-tech-challenge-web-app
 
 ### Deploy
