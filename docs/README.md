@@ -2,7 +2,8 @@
 
 Este repositório consiste na camada de orquestração desenvolvida com Apache Airflow, projetada para automatizar o ciclo de vida dos dados ao integrar o fluxo de extração (web scraping) à atualização periódica das matrizes de similaridade baseadas em TF-IDF. Por meio da coordenação do workflow de ETL e da sincronização dos artefatos de ML, a solução estabelece uma arquitetura ML-ready que assegura a integridade e a disponibilidade de informações atualizadas para consumo.
 
-Arquitetura
+### Arquitetura
+
 O diagrama abaixo ilustra a arquitetura do projeto na sua integridade e com suas principais funcionalidades:
 
 ```mermaid
