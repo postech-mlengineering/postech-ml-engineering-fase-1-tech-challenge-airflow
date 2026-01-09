@@ -87,7 +87,7 @@ A API estará rodando em http://localhost:8080. Certifique-se de configurar as v
 
 | Componente | Tecnologia | Versão | Descrição |
 | :--- | :--- | :--- | :--- |
-| **Orquestrador** | **Apache Airflow** | `^2.10.0` | Framework para orquestração de pipelines |
+| **Orquestrador** | **Apache Airflow** | `^2.10.0` | Framework para orquestração de workflows |
 | **Linguagem** | **Python** | `>=3.11, <3.14` | Linguagem para desenvolvimento de scripts |
 | **Infraestrutura** | **Docker** | `3.8 (Compose)` | Ferramenta de containerização para paridade entre ambientes |
 | **Gerenciamento** | **Poetry** | `2.2.1` | Gerenciador de ambientes virtuais para isolamento de dependências |
