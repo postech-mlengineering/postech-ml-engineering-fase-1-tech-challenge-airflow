@@ -51,7 +51,7 @@ graph LR
 
 ### Pré-requisitos
 
-Certifique-se de ter o Python 3.11+ e o Poetry instalados em seu sistema. Para orquestração, recomenda-se o uso do Docker para rodar o ambiente Airflow.
+Certifique-se de ter o Python 3.11+ e o Poetry instalados em seu sistema.
 
 Para instalar o Poetry, use o método oficial:
 
@@ -61,7 +61,7 @@ curl -sSL [https://install.python-poetry.org](https://install.python-poetry.org)
 
 ### Instalação
 
-Clone o repositório e instale as dependências listadas no pyproject.toml:
+Clone o repositório e instale as dependências:
 
 ```bash
 git clone [https://github.com/jorgeplatero/postech-ml-techchallenge-fase-1-airflow.git](https://github.com/jorgeplatero/postech-ml-techchallenge-fase-1-airflow.git)
@@ -94,8 +94,8 @@ A API estará rodando em http://localhost:8080. Certifique-se de configurar as v
 
 ### Integrações
 
-A DAG interage diretamente com a API que gerencia o banco de dados e o motor de predição. O repositório da API pode ser acessado em:
+O airflow interage com a API que gerencia o banco de dados e o motor de recomendação.
 
-Repositório GitHub: https://github.com/postech-mlengineering/postech-ml-techchallenge-fase-1-api
+Link para o repositório da API: https://github.com/postech-mlengineering/postech-ml-techchallenge-fase-1-api
 
 ### Deploy
