@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
-from airflow.models import Variable
+from airflow.sdk import Variable
 
 
 def login_to_api(**kwargs):
