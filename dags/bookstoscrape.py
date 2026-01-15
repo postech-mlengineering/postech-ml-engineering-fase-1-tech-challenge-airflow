@@ -8,7 +8,7 @@ from airflow.models import Variable
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-API_BASE_URL = Variable.get('api_url')
+API_BASE_URL = Variable.get('api_base_url')
 API_USERNAME = Variable.get('api_username')
 API_PASSWORD = Variable.get('api_password')
 LOGIN_ENDPOINT = f'{API_BASE_URL}/api/v1/auth/login'
