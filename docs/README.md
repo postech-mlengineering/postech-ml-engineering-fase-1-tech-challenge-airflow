@@ -6,49 +6,7 @@ Este repositório consiste na camada de orquestração desenvolvida com Apache A
 
 O diagrama abaixo ilustra a arquitetura do projeto na sua integridade e com suas principais funcionalidades:
 
-```mermaid
-graph LR
-    subgraph External_Source ["Fonte de Dados"]
-        Web["Books to Scrape"]
-    end
-
-    subgraph Orchestration_Layer ["Orquestração"]
-        Airflow["Apache Airflow"]
-    end
-
-    subgraph App_Layer ["API"]
-        direction TB
-        Scraper["Scraper"]
-        MLEngine["ML Engine"]
-        Auth["JWT"]
-    end
-
-    subgraph Storage_Layer ["Persistência"]
-        direction TB
-        DB[("PostgreSQL/SQLite")]
-        PKL["ML Artifacts"]
-    end
-
-    subgraph Presentation_Layer ["Aplicativo Web"]
-        Streamlit["Streamlit"]
-    end
-
-    %% Fluxos de Automação
-    Airflow --> Scraper
-    Airflow --> MLEngine
-
-    %% Fluxos de Dados
-    Scraper --> Web
-    Scraper --> DB
-    MLEngine --> DB
-    MLEngine --> PKL
-
-    %% Fluxo do Usuário
-    Streamlit --> Auth
-    Auth --> MLEngine
-    MLEngine --> PKL
-    MLEngine --> Streamlit
-```
+<br><p align='center'><img src='https://github.com/postech-mlengineering/postech-ml-engineering-fase-1-tech-challenge-api/blob/9cc654c78d0fbc3a3b8c7f85d4841364127b5cdd/docs/arquitetura.svg' alt='Arquitetura'></p>
 
 ### Pré-requisitos
 
@@ -102,3 +60,19 @@ Link para o repositório da API: https://github.com/postech-mlengineering/postec
 Link para o repositório do aplicativo web: https://github.com/postech-mlengineering/postech-ml-engineering-fase-1-tech-challenge-web-app
 
 ### Deploy
+
+A arquitetura e o deploy foram concebidos para suportar um ecossistema distribuído, utilizando a AWS (EC2) como provedor de infraestrutura e Docker para a padronização e o isolamento dos ambientes de execução.
+
+A solução é composta por três camadas principais de containers integrados:
+
+* **Orquestração (Apache Airflow)**: implementada em containers dedicados, esta camada é responsável pelo agendamento e execução dos pipelines de dados, acionando as rotas de /scrape e /training-data da API
+
+* **API (Flask)**: é o coração da arquitetura, onde a lógica de negócio e o motor de recomendações reside. Esta camada interage com o site Books To Scrape para aquisição de dados via web scraping e expõe endpoints para consumo
+
+* **Consumo (Streamlit)**: é a interface web que consome os serviços da API, permitindo que os usuários finais interajam com a API
+
+A comunicação entre os containers é otimizada por meio da atribuição de rede comum no Docker, permitindo que os serviços interajam através de nomes de host predefinidos em vez de IPs dinâmicos, elevando a eficiência e performance ao processar o tráfego de dados localmente na interface do host, o que reduz a latência e elimina custos de saída.
+
+#### Persistência
+
+A camada de persistência é estruturada por meio de um banco de dados relacional gerenciado via Supabase (integrado à plataforma Vercel). Esta infraestrutura é responsável pela centralização do acervo de livros, pelo histórico de preferências de usuários e pela persistência dos logs de auditoria.
