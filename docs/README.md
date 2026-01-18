@@ -1,6 +1,6 @@
 # Repositório do Airflow para o Tech Challenge da Fase 1 da Pós-Graduação em Machine Learning Engineering da FIAP
 
-Este repositório consiste na camada de orquestração desenvolvida com Apache Airflow, responsável por automatizar o fluxo de web scraping e do pipeline de ML para atualização dos artefatos .joblib do motor de recomendação da API BooksToScrape.
+Este repositório consiste na camada de orquestração desenvolvida com Apache Airflow, responsável por automatizar os fluxos de web scraping e pipeline para atualização dos artefatos do motor de recomendação da API BooksToScrape.
 
 ### Arquitetura
 
