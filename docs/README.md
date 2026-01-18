@@ -1,22 +1,16 @@
 # Repositório do Airflow para o Tech Challenge da Fase 1 da Pós-Graduação em Machine Learning Engineering da FIAP
 
-Este repositório consiste na camada de orquestração desenvolvida com Apache Airflow, projetada para automatizar o ciclo de vida dos dados ao integrar o fluxo de extração (web scraping) à atualização periódica das matrizes de similaridade baseadas em TF-IDF. Por meio da coordenação do workflow de ETL e da sincronização dos artefatos de ML, a solução estabelece uma arquitetura ML-ready que assegura a integridade e a disponibilidade de informações atualizadas para consumo.
+Este repositório consiste na camada de orquestração desenvolvida com Apache Airflow, responsável por automatizar o fluxo de web scraping e do pipeline de ML para atualização dos artefatos .joblib do motor de recomendação da API BooksToScrape.
 
 ### Arquitetura
 
 O diagrama abaixo ilustra a arquitetura do projeto na sua integridade e com suas principais funcionalidades:
 
-<br><p align='center'><img src='https://github.com/postech-mlengineering/postech-ml-engineering-fase-1-tech-challenge-airflow/blob/714791a89eaa77f5e57a0af3137e1cdd30c6dd6e/docs/arquitetura.svg' alt='Arquitetura'></p>
+<br><p align='center'><img src='https://github.com/postech-mlengineering/postech-ml-engineering-fase-1-tech-challenge-api/blob/9cc654c78d0fbc3a3b8c7f85d4841364127b5cdd/docs/arquitetura.svg' alt='Arquitetura'></p>
 
 ### Pré-requisitos
 
-Certifique-se de ter o Python 3.11+ e o Poetry instalados em seu sistema.
-
-Para instalar o Poetry, use o método oficial:
-
-```bash
-curl -sSL [https://install.python-poetry.org](https://install.python-poetry.org) | python3 -
-```
+Certifique-se de ter o Python 3.11, o Poetry 2.1.1 e o Docker 29.1.1 instalados em seu sistema.
 
 ### Instalação
 
@@ -36,11 +30,38 @@ O Poetry criará um ambiente virtual isolado e instalará todas as bibliotecas n
 
 Para subir o ambiente completo do Airflow (Webserver, Scheduler, Postgres) via Docker:
 
+1. Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto e preencha conforme o conteúdo abaixo:
+
 ```bash
-docker-compose up -d
+#variáveis de sistema para permissões
+AIRFLOW_UID=1000
+AIRFLOW_GID=0
+#configurações de acesso à interface web
+_AIRFLOW_WWW_USER_USERNAME=<usuario_de_sua_escolha>
+_AIRFLOW_WWW_USER_PASSWORD=<senha_de_sua_escolha>
 ```
 
-A API estará rodando em http://localhost:8080. Certifique-se de configurar as variáveis de ambiente necessárias na seção Admin -> Variables da UI.
+2. Crie a rede externa (necessária para a comunicação entre os serviços):
+
+```bash
+docker network create postech_mlengineering_api
+```
+
+3. Inicie a aplicação:
+
+```bash
+docker-compose up --build
+```
+
+A API estará rodando em http://localhost:8080. 
+
+Certifique-se de configurar as variáveis de ambiente necessárias para a execução da da rotina na seção Admin -> Variables da UI. 
+
+```bash
+API_URL=http://postech_mlengineering_api:5000
+API_USERNAME=<usuario_airflow_cadastrado_na_api>
+API_PASSWORD=<senha_do_usuario_airflow_cadastrado_na_api>
+```
 
 ### Tecnologias
 
@@ -61,18 +82,36 @@ Link para o repositório do aplicativo web: https://github.com/postech-mlenginee
 
 ### Deploy
 
-A arquitetura e o deploy foram concebidos para suportar um ecossistema distribuído, utilizando a AWS (EC2) como provedor de infraestrutura e Docker para a padronização e o isolamento dos ambientes de execução.
+A arquitetura e o deploy foram concebidos para suportar um ecossistema distribuído, utilizando uma instância EC2 na AWS como infraestrutura e Docker para a padronização e o isolamento dos ambientes.
 
-A solução é composta por três camadas principais de containers integrados:
+A solução é composta por três camadas de containers integrados:
 
-* **Orquestração (Apache Airflow)**: implementada em containers dedicados, esta camada é responsável pelo agendamento e execução dos pipelines de dados, acionando as rotas de /scrape e /training-data da API
+- **Orquestração (Apache Airflow)**: implementada em containers dedicados, esta camada é responsável pelo agendamento e execução dos pipelines de dados, acionando as rotas de /scrape e /training-data da API
 
-* **API (Flask)**: é o coração da arquitetura, onde a lógica de negócio e o motor de recomendações reside. Esta camada interage com o site Books To Scrape para aquisição de dados via web scraping e expõe endpoints para consumo
+- **API (Flask)**: é o coração da arquitetura. Esta camada interage com o site Books To Scrape para aquisição de dados via web scraping e expõe endpoints para consumo
 
-* **Consumo (Streamlit)**: é a interface web que consome os serviços da API, permitindo que os usuários finais interajam com a API
+- **Consumo (Web App Streamlit)**: é a interface web que consome os serviços da API, permitindo que os usuários finais interajam com a API
 
-A comunicação entre os containers é otimizada por meio da atribuição de rede comum no Docker, permitindo que os serviços interajam através de nomes de host predefinidos em vez de IPs dinâmicos, elevando a eficiência e performance ao processar o tráfego de dados localmente na interface do host, o que reduz a latência e elimina custos de saída.
+A comunicação entre os containers é otimizada via Docker network, permitindo a interação entre serviços através de nomes de host em vez de IPs dinâmicos. Essa configuração reduz a latência, elimina custos de tráfego externo e melhora a eficiência ao processar as requisições localmente no host.
+
+Os seviços podem ser acessados nos endereços abaixo:
+
+- **API**: http://18.208.50.37:5000
+- **Web App Streamlit**: http://18.208.50.37:8501
+- **Apache Airflow**: http://18.208.50.37:8080
 
 #### Persistência
 
-A camada de persistência é estruturada por meio de um banco de dados relacional gerenciado via Supabase (integrado à plataforma Vercel). Esta infraestrutura é responsável pela centralização do acervo de livros, pelo histórico de preferências de usuários e pela persistência dos logs de auditoria.
+A camada de persistência foi definida em um banco de dados gerenciado via Supabase (integrado à plataforma Vercel). Esta infraestrutura é responsável pela centralização do acervo de livros, pelo histórico de preferências de usuários e pela persistência dos logs de auditoria.
+
+### Link da Apresentação
+
+https://youtu.be/mSAH299OHDs
+
+### Colaboradores
+
+[Jorge Platero](https://github.com/jorgeplatero)
+
+[Leandro Delisposti](https://github.com/LeandroDelisposti)
+
+[Hugo Rodrigues](https://github.com/Nokard)
