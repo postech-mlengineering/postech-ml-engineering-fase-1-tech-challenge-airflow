@@ -53,7 +53,7 @@ docker network create postech_mlengineering_api
 docker-compose up --build
 ```
 
-A API estará rodando em http://localhost:8080. 
+A UI do Apache Airflow estará rodando em http://localhost:8080.
 
 Certifique-se de configurar as variáveis de ambiente necessárias para a execução da da rotina na seção Admin -> Variables da UI. 
 
