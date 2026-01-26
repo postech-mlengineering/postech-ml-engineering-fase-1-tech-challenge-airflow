@@ -69,7 +69,7 @@ API_PASSWORD=<senha_do_usuario_airflow_cadastrado_na_api>
 | :--- | :--- | :--- | :--- |
 | **Orquestrador** | **Apache Airflow** | `^2.10.0` | Framework para orquestração de workflows |
 | **Linguagem** | **Python** | `>=3.11, <3.14` | Linguagem para desenvolvimento de scripts |
-| **Infraestrutura** | **Docker** | `3.8 (Compose)` | Ferramenta de containerização para paridade entre ambientes |
+| **Infraestrutura** | **Docker** | `29.1.1` | Ferramenta de containerização para paridade entre ambientes |
 | **Gerenciamento** | **Poetry** | `2.2.1` | Gerenciador de ambientes virtuais para isolamento de dependências |
 
 ### Integrações
